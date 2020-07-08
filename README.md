@@ -1,5 +1,9 @@
 # HandMeDown
 
+### Live @ [handmedown.herokuapp.com](https://handmedown.herokuapp.com/)
+
+Built with React.js, Node.js with Express, and PostgreSQL.
+
 ## Problem Statement: 
 The term 'sustainability' can be very misleading to consumers because it is not as straight forward as one would think. The term has been greatly misrepresented in the fashion industry as telling instead of showing. Fashion labels think it only suffices to allude to the fact that they are using 'green' materials in their products while not changing the process of making the products. Our focus is on mass consumption by the public. 
 
