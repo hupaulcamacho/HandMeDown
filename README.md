@@ -1,5 +1,7 @@
 # HandMeDown
 
+![Alt Text](./website_screenshot.png)
+
 ### Live @ [handmedown.herokuapp.com](https://handmedown.herokuapp.com/)
 
 Built with React.js, Node.js with Express, and PostgreSQL.
