@@ -52,3 +52,23 @@ A user can create an original QR code for each individual garment. The code can 
 
 
 [Wireframes](./Assets/Wireframes.md)
+
+## Running The HandMeDown App Locally
+
+First install dependencies in the /client and /server directories with:
+
+### `npm install`
+
+To launch the client you can run:
+
+### `npm start`
+
+Launch the server before using the client with:
+
+### `nodemon start:dev`
+
+This script runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.<br />
+
