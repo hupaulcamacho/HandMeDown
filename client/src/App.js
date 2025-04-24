@@ -1,6 +1,6 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import api from './services/api';
+import { Route, Routes, Navigate, useNavigate, useParams, useLocation } from 'react-router-dom';
+import api from ''
 
 import './App.css';
 
@@ -67,7 +67,7 @@ class App extends React.Component {
         user: null,
         isUserLoggedIn: false
       });
-      this.props.history.push('/');
+      this.props.navigate('/');
     } catch (err) {
       console.log('ERROR', err);
     }
@@ -81,19 +81,35 @@ class App extends React.Component {
           logoutUser={this.logoutUser}
           isUserLoggedIn={this.state.isUserLoggedIn}
         />
-
-        <Switch>
-          <Route path='/user/wardrobe/garment/:id' render={this.renderGarment} />
-          <PrivateRoute path='/user/wardrobe' render={this.renderWardrobe} isUserLoggedIn={this.state.isUserLoggedIn} />
+        <Routes>
+          <Route path='/user/wardrobe/garment/:id' element={<Garment user={this.state.user} />} />
+          <Route path='/user/wardrobe' element={
+            this.state.isUserLoggedIn ? 
+              <Wardrobe user={this.state.user} /> : 
+              <Navigate to="/login" replace />
+          } />
           
-          <Route path='/login' render={this.renderAuthContainer} />
-          <Route path='/signup' render={this.renderAuthContainer} />
-          <Route path='/about' component={About} />
-          <Route path='/' component={Home} />
-        </Switch>
+          <Route path='/login' element={<AuthContainer isUserLoggedIn={this.state.isUserLoggedIn} setUser={this.setUser} />} />
+          <Route path='/signup' element={<AuthContainer isUserLoggedIn={this.state.isUserLoggedIn} setUser={this.setUser} />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/' element={<Home />} />
+        </Routes>
       </div>
     );
   }
 }
 
-export default App;
+// Higher-order component to provide navigate function to class component
+function withRouter(Component) {
+  function ComponentWithRouterProp(props) {
+    let navigate = useNavigate();
+    let params = useParams();
+    let location = useLocation();
+    
+    return <Component {...props} navigate={navigate} params={params} location={location} />;
+  }
+  
+  return ComponentWithRouterProp;
+}
+
+export default withRouter(App);
