@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Popup from "reactjs-popup";
-import axios from 'axios'
+import api from '../services/api'
 
  class Garment extends Component {
     state = {
@@ -26,9 +26,9 @@ import axios from 'axios'
 
     getGarment = async () => {
         const { routeprops: { match:{ params } } } = this.props;
-        const URL = `/api/garments/${params.id}`
+        const URL = `/garments/${params.id}`
         try {
-            let results = await axios.get(URL)
+            let results = await api.get(URL)
             console.log(results.data.payload)
             this.setState({
                 garment: results.data.payload.garment
@@ -40,9 +40,9 @@ import axios from 'axios'
 
     getHistory = async () => {
         const { routeprops: { match:{ params } } } = this.props;
-        const URL = `/api/histories/garment/${params.id}`
+        const URL = `/histories/garment/${params.id}`
         try {
-            let results = await axios.get(URL)
+            let results = await api.get(URL)
             console.log(results.data.payload)
             this.setState({
                 historyPosts: results.data.payload
@@ -56,7 +56,7 @@ import axios from 'axios'
         e.preventDefault()
         const { user, body, location, img_url, isPublic } = this.state
         const { routeprops: { match:{ params } } } = this.props;
-        const URL = `/api/histories/new/${params.id}/${user.id}`;
+        const URL = `/histories/new/${params.id}/${user.id}`;
 
         const data = {
             body: body,
@@ -66,7 +66,7 @@ import axios from 'axios'
         }
 
         try {
-            await axios.post(URL, data)
+            await api.post(URL, data)
         } catch (err) {
             console.log(err)
         }
@@ -103,7 +103,7 @@ import axios from 'axios'
                         modal
                         position="right center"
                     >
-                    <img src={`http://api.qrserver.com/v1/create-qr-code/?data=https://handmedown.herokuapp.com/user/wardrobe/garment/${garment.id}&size=500x500`} alt={garment.garment_name} />
+                    <img src={`http://api.qrserver.com/v1/create-qr-code/?data=https://handmedown-production.up.railway.app/user/wardrobe/garment/${garment.id}&size=500x500`} alt={garment.garment_name} />
                     <button>Print</button>
 
                     </Popup>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import axios from 'axios';
+import api from './services/api';
 
 import './App.css';
 
@@ -34,8 +34,8 @@ class App extends React.Component {
 
   checkUserLoggedIn = async () => {
     try {
-      const { data } = axios.get("/api/auth/isUserLoggedIn");
-      this.props.setUser(data.payload);
+      const { data } = await api.get("/auth/isUserLoggedIn");
+      this.setUser(data.payload);
     } catch (err) {
       if (err.message.includes(401)) {
         this.setState({
@@ -62,7 +62,7 @@ class App extends React.Component {
   logoutUser = async () => {
     console.log('logging out user');
     try {
-      await axios.get('/api/auth/logout');
+      await api.get('/auth/logout');
       this.setState({
         user: null,
         isUserLoggedIn: false

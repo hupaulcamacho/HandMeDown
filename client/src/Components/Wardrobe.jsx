@@ -1,7 +1,7 @@
 import React, { Component, Profiler } from 'react'
 import Popup from "reactjs-popup";
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../services/api'
 
 class Wardrobe extends Component {
     state = {
@@ -23,9 +23,9 @@ class Wardrobe extends Component {
 
     getUserGarments = async () => {
         let { user } = this.props
-        let URL = `/api/garments/garment/${user.id}`
+        let URL = `/garments/garment/${user.id}`
         try {
-            let results = await axios.get(URL)
+            let results = await api.get(URL)
             console.log(results.data.payload)
             this.setState({
                 garments: results.data.payload
@@ -46,7 +46,7 @@ class Wardrobe extends Component {
         e.preventDefault()
         let { user } = this.props
         let { garment_name, caption, category, img_url, prime_location } = this.state
-        let URL = `/api/garments/user/${user.id}`
+        let URL = `/garments/user/${user.id}`
         let data = {
             garment_name: garment_name,
             category: category,
@@ -55,7 +55,7 @@ class Wardrobe extends Component {
             prime_location: prime_location
         }
         try {
-            await axios.post(URL, data)
+            await api.post(URL, data)
         } catch (err) {
             console.log(err)
         }
