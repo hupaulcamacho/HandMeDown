@@ -35,6 +35,7 @@ class AuthContainer extends Component {
         // make network request to /auth/signup to register user
         try {
             const { data } = await axios.post('/api/auth/login', {username : this.state.username, password: this.state.password} )
+
             const user = data.payload
             this.props.setUser(user)
             console.log(data)
