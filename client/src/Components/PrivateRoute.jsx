@@ -1,15 +1,23 @@
-import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import React from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-const PrivateRoute = (props) => {
-    const isUserLoggedIn = props.isUserLoggedIn;
-    const Component = props.component
-    const otherPros = { ...props }
+/**
+ * A wrapper for protected routes in React Router v6
+ * - Checks if user is logged in
+ * - If logged in, renders the protected content
+ * - If not logged in, redirects to login with return path
+ */
+const PrivateRoute = ({ isUserLoggedIn, children, redirectPath = '/login' }) => {
+  const location = useLocation();
 
-    if (isUserLoggedIn) {
-        return  <Route {...otherPros} component={Component}/>
-    }
-    return <Redirect to='/' />
-}
+  // If user is not logged in, redirect to login
+  if (!isUserLoggedIn) {
+    // Save the current location for redirecting back after login
+    return <Navigate to={redirectPath} state={{ from: location.pathname }} replace />;
+  }
 
-export default PrivateRoute
+  // If user is logged in, render either the children or an outlet for nested routes
+  return children ? children : <Outlet />;
+};
+
+export default PrivateRoute;

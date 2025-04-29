@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes, Navigate, useNavigate, useParams, useLocation } from 'react-router-dom';
-import api from ''
+import api from './services/api';
 
 import './App.css';
 
@@ -46,18 +46,8 @@ class App extends React.Component {
     console.log('Checking if user logged in');
   }
 
-  renderAuthContainer = () => {
-    const { isUserLoggedIn } = this.state;
-    return <AuthContainer isUserLoggedIn={isUserLoggedIn} setUser={this.setUser} />
-  }
-
-  renderWardrobe = (routeprops) => {
-    return <Wardrobe routeprops={routeprops} user={this.state.user} />
-  }
-
-  renderGarment = (routeprops) => {
-    return <Garment routeprops={routeprops} user={this.state.user} />
-  }
+  // Removed renderAuthContainer, renderWardrobe, and renderGarment methods
+  // as they're no longer needed with React Router v6 element props
 
   logoutUser = async () => {
     console.log('logging out user');
@@ -82,12 +72,17 @@ class App extends React.Component {
           isUserLoggedIn={this.state.isUserLoggedIn}
         />
         <Routes>
-          <Route path='/user/wardrobe/garment/:id' element={<Garment user={this.state.user} />} />
-          <Route path='/user/wardrobe' element={
-            this.state.isUserLoggedIn ? 
-              <Wardrobe user={this.state.user} /> : 
-              <Navigate to="/login" replace />
-          } />
+          <Route path='/user/wardrobe/garment/:id' element={<GarmentWithRouter user={this.state.user} />} />
+          
+          {/* Use PrivateRoute for protected routes */}
+          <Route 
+            path='/user/wardrobe' 
+            element={
+              <PrivateRoute isUserLoggedIn={this.state.isUserLoggedIn}>
+                <Wardrobe user={this.state.user} />
+              </PrivateRoute>
+            } 
+          />
           
           <Route path='/login' element={<AuthContainer isUserLoggedIn={this.state.isUserLoggedIn} setUser={this.setUser} />} />
           <Route path='/signup' element={<AuthContainer isUserLoggedIn={this.state.isUserLoggedIn} setUser={this.setUser} />} />
@@ -110,6 +105,12 @@ function withRouter(Component) {
   }
   
   return ComponentWithRouterProp;
+}
+
+// Wrapper for Garment component to provide route params
+function GarmentWithRouter(props) {
+  const params = useParams();
+  return <Garment {...props} id={params.id} />;
 }
 
 export default withRouter(App);

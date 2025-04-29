@@ -25,8 +25,9 @@ import api from '../services/api'
     }
 
     getGarment = async () => {
-        const { routeprops: { match:{ params } } } = this.props;
-        const URL = `/garments/${params.id}`
+        // Use id passed directly from props instead of routeprops
+        const id = this.props.id;
+        const URL = `/garments/${id}`
         try {
             let results = await api.get(URL)
             console.log(results.data.payload)
@@ -39,8 +40,9 @@ import api from '../services/api'
     }
 
     getHistory = async () => {
-        const { routeprops: { match:{ params } } } = this.props;
-        const URL = `/histories/garment/${params.id}`
+        // Use id passed directly from props instead of routeprops
+        const id = this.props.id;
+        const URL = `/histories/garment/${id}`
         try {
             let results = await api.get(URL)
             console.log(results.data.payload)
@@ -55,8 +57,9 @@ import api from '../services/api'
     handleHistorySubmit = async (e) => {
         e.preventDefault()
         const { user, body, location, img_url, isPublic } = this.state
-        const { routeprops: { match:{ params } } } = this.props;
-        const URL = `/histories/new/${params.id}/${user.id}`;
+        // Use id passed directly from props instead of routeprops
+        const id = this.props.id;
+        const URL = `/histories/new/${id}/${user.id}`;
 
         const data = {
             body: body,
